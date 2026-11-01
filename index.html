@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B&TSTORE - Thế Giới Smartphone Cao Cấp</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script> tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#0b0f17',
+                        cardbg: '#151c28',
+                        accent: '#00f0ff',
+                        accentGlow: 'rgba(0, 240, 255, 0.25)',
+                        purpleNeon: '#7000ff'    },
+                       fontFamily: {
+                        sans: ['Inter', 'sans-serif'],    }    }        }      }
+    </script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400 500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f17;
+            color: #f1f5f9;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+        .neon-border {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+        }neon-border:hover {
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
+            border: 1px solid rgba(0, 240, 255, 0.7);
+        }
+        .glass-panel {
+            background: rgba(21, 28, 40, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #00f0ff, #7000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 30%, rgba(112, 0, 255, 0.15) 0%, rgba(0, 240, 255, 0.05) 50%, transparent 70%);
+        }
+    </style>
+</head>
+<body class="bg-darkbg text-slate-100 min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
+
+    <!-- NAVIGATION HEADER -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4"><!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group min-w-fit">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center text-black font-extrabold text-xl shadow-lg shadow-cyan-500/30 group-hover:scale-105 transition-transform">
+                    BT
+                </div>
+                <span class="text-2xl font-black tracking-wider uppercase font-sans">
+                    B&T<span class="gradient-text">STORE</span>
+                </span>
+            </a>
+
+            <!-- Search Bar in Header (Desktop) -->
+            <div class="hidden md:flex flex-1 max-w-md relative">
+                <input type="text" id="headerSearch" oninput="handleHeaderSearch(this.value)" 
+                    placeholder="Tìm kiếm iPhone 16 Pro Max, S25 Ultra, Xiaomi..." 
+                    class="w-full bg-slate-900/90 text-sm text-slate-200 placeholder-slate-500 rounded-full py-2.5 pl-11 pr-4 border border-slate-700/80 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="flex items-center gap-4">
+                <!-- Mobile Search Toggle Button --><button onclick="toggleMobileSearch()" class="md:hidden p-2.5 rounded-lg bg-slate-800/80 text-slate-300 hover:text-cyan-400">
+                    <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                </button>
+
+                <!-- Cart Icon Button -->
+                <button onclick="openCartDrawer()" class="relative p-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 transition-all border border-slate-700/50">
+                    <i class="fa-solid fa-cart-shopping text-lg"></i>
+                    <span id="cartBadge" class="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-cyan-400 to-blue-600 text-black font-extrabold text-xs w-5 h-5 rounded-full flex items-center justify-center shadow-lg shadow-cyan-500/50 scale-100 transition-transform">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search Input Drawer (Hidden by default) -->
+        <div id="mobileSearchDrawer" class="hidden md:hidden px-4 pb-4 pt-1 border-t border-slate-800 bg-slate-900">
+            <div class="relative">
+                <input type="text" id="mobileSearch" oninput="handleHeaderSearch(this.value)"                     placeholder="Tìm kiếm điện thoại..." 
+                    class="w-full bg-slate-800 text-sm text-slate-200 placeholder-slate-400 rounded-xl py-3 pl-10 pr-4 border border-slate-700 focus:outline-none focus:border-cyan-400">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO BANNER SECTION -->
+    <section class="relative overflow-hidden hero-gradient py-12 md:py-20 border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Text Details -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold tracking-wide uppercase">
+                        <i class="fa-solid fa-bolt text-yellow-400"></i> Siêu phẩm Flagship 2026
+                    </div>
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
+                        Thế Hệ Smartphone <br>
+                        <span class="gradient-text">Bứt Phá Giới Hạn</span>
+                    </h1>
+                    <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 font-normal">Trải nghiệm sức mạnh xử lý AI vượt trội, camera zoom quang học đỉnh cao cùng công nghệ sạc siêu tốc. Giảm ngay tới <span class="text-cyan-400 font-bold">3.600.000đ</span> khi đặt mua ngay hôm nay.
+                    </p>
+                    
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#catalogue" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 hover:from-cyan-300 hover:to-blue-500 text-black font-extrabold text-sm shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:-translate-y-0.5 transition-all">
+                            Khám Phá Ngay <i class="fa-solid fa-arrow-down ml-2"></i>
+                        </a>
+                        <a href="#specs-highlight" class="px-6 py-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 font-semibold text-sm border border-slate-700 transition-all">
+                            Ưu Đãi Độc Quyền
+                        </a>
+                    </div>
+
+                    <!-- Micro Features List -->
+                    <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-800/80 text-left max-w-lg mx-auto lg:mx-0">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-truck-fast text-cyan-400 text-lg"></i>
+                            <span class="text-xs text-slate-300 font-medium">Giao siêu tốc 2h</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-cyan-400 text-lg"></i>
+                            <span class="text-xs text-slate-300 font-medium">Bảo hành 12 tháng</span>
+                        </div>     <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-rotate-left text-cyan-400 text-lg"></i>
+                            <span class="text-xs text-slate-300 font-medium">1 Đổi 1 trong 30 ngày</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Banner Image Card -->
+                <div class="lg:col-span-5 relative flex justify-center">
+                    <div class="relative w-full max-w-sm rounded-3xl bg-gradient-to-b from-slate-800 to-slate-950 p-6 neon-border transition-transform hover:scale-[1.02]">
+                        <span class="absolute top-4 right-4 bg-red-500 text-white text-xs font-black px-2.5 py-1 rounded-full uppercase tracking-wider">HOT SALE</span>
+                        
+                        <div class="h-72 flex items-center justify-center p-4">
+                            <img src="https://cdn.phototourl.com/member/2026-10-31-69cdd0e5-4bc8-412e-aa1a-62e66ccf0e9e.jpg" 
+                                 alt="Smartphone Flagship Showcase" 
+                                 class="max-h-full object-contain filter drop-shadow-[0_15px_15px_rgba(0,0,0,0.7)]">
+                        </div>
+                        
+                        <div class="space-y-2 mt-4 text-center">
+                            <span class="text-xs text-cyan-400 font-semibold uppercase tracking-wider">OPPO Find X10 Pro Max</span>
+                            <h3 class="text-xl font-bold text-white">Quyền Năng Mới</h3>
+                            <div class="flex items-center justify-center gap-3"><span class="text-xl font-black text-cyan-400">35.150.000 đ</span>
+                                <span class="text-sm text-slate-500 line-through">36.999.000 đ</span>
+                            </div>
+                            <button onclick="addToCart(13)" class="w-full mt-3 py-2.5 bg-slate-800 hover:bg-cyan-500 hover:text-black border border-cyan-500/40 text-cyan-400 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-cart-plus"></i> Chọn Mua Ngay
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CATALOGUE CONTAINER -->
+    <main id="catalogue" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full">
+        
+        <!-- SECTION TITLE -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white flex items-center gap-3">
+                    <span class="w-2.5 h-8 bg-gradient-to-b from-cyan-400 to-purple-600 rounded-full inline-block"></span>
+                    Danh Mục Điện Thoại
+                </h2>                <p class="text-slate-400 text-sm mt-1">Khám phá các dòng Smartphone chính hãng mới nhất 2026</p>
+            </div>
+            
+            <div class="text-slate-400 text-sm">
+                Hiển thị <span id="productCount" class="text-cyan-400 font-bold">0</span> sản phẩm
+            </div>
+        </div>
+
+        <!-- FILTER & CONTROLS TOOLBAR -->
+        <div class="glass-panel p-4 rounded-2xl mb-8 space-y-4">
+            
+            <!-- Brand Filter Badges -->
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mr-2 hidden sm:inline">Hãng:</span>
+                <button onclick="filterByBrand('all')" class="brand-btn active px-4 py-2 rounded-xl text-xs font-bold transition-all bg-cyan-400 text-black border border-cyan-400">
+                    Tất cả
+                </button>
+                <button onclick="filterByBrand('Apple')" class="brand-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+                    <i class="fa-brands fa-apple mr-1"></i> Apple
+                </button>
+                <button onclick="filterByBrand('IQOO')" class="brand-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+                    IQOO                </button>
+                <button onclick="filterByBrand('Xiaomi')" class="brand-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+                    Xiaomi
+                </button>
+                <button onclick="filterByBrand('OPPO')" class="brand-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+                    OPPO
+                </button>    
+                <button onclick="filterByBrand('RedMagic')" class="brand-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+                    RedMagic
+                </button>
+                <button onclick="filterByBrand('Samsung')" class="brand-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+                    Samsung
+                <button onclick="filterByBrand('Vivo')" class="brand-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+                    Vivo
+                </button>
+            </div>
+
+            <!-- Additional Sort and Search controls -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-3 border-t border-slate-800">
+                
+                <!-- Search Input inside bar -->
+                <div class="relative w-full sm:w-72">
+                    <input type="text" id="filterSearch" oninput="handleHeaderSearch(this.value)" 
+                        placeholder="Lọc theo tên sản phẩm..." 
+                        class="w-full bg-slate-900 text-xs text-slate-200 placeholder-slate-500 rounded-xl py-2.5 pl-9 pr-3 border border-slate-700 focus:outline-none focus:border-cyan-400">
+                    <i class="fa-solid fa-filter absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                </div> <!-- Price Sorting dropdown -->
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                    <label for="sortPrice" class="text-xs text-slate-400 whitespace-nowrap">Sắp xếp:</label>
+                    <select id="sortPrice" onchange="sortProducts(this.value)" class="bg-slate-900 text-xs text-slate-200 rounded-xl px-3 py-2.5 border border-slate-700 focus:outline-none focus:border-cyan-400 w-full sm:w-auto">
+                        <option value="default">Mặc định (Mới nhất)</option>
+                        <option value="asc">Giá: Thấp đến Cao</option>
+                        <option value="desc">Giá: Cao đến Thấp</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PRODUCT GRID CONTAINER -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Dynamic JavaScript content will load here -->
+        </div>
+
+        <!-- Empty State Message -->
+        <div id="emptyState" class="hidden py-16 text-center">
+            <div class="w-16 h-16 mx-auto rounded-full bg-slate-800/80 flex items-center justify-center text-slate-500 text-2xl mb-4">
+                <i class="fa-solid fa-box-open"></i>
+            </div>            <h3 class="text-lg font-bold text-slate-300">Không tìm thấy sản phẩm phù hợp</h3>
+            <p class="text-sm text-slate-500 mt-1">Thử thay đổi từ khóa tìm kiếm hoặc chọn thương hiệu khác.</p>
+            <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-cyan-400 text-xs font-bold rounded-xl border border-slate-700">
+                Xóa tất cả bộ lọc
+            </button>
+        </div>
+
+    </main>
+
+    <!-- SHOPPING CART DRAWER (SLIDE OVER) -->
+    <div id="cartOverlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden transition-opacity duration-300" onclick="closeCartDrawer()"></div>
+    
+    <div id="cartDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-cardbg border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
+        
+        <!-- Cart Header -->
+        <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-cart-shopping text-cyan-400 text-xl"></i>
+                <h3 class="text-lg font-bold text-white">Giỏ Hàng Của Bạn</h3>
+            </div>
+            <button onclick="closeCartDrawer()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+                <i class="fa-solid fa-xmark text-xl"></i> </button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cartItemsList" class="p-5 flex-1 overflow-y-auto space-y-4">
+            <!-- JavaScript rendered items -->
+        </div>
+
+        <!-- Cart Footer / Total -->
+        <div class="p-5 border-t border-slate-800 bg-slate-900/50 space-y-4">
+            <div class="flex items-center justify-between text-sm">
+                <span class="text-slate-400">Tạm tính:</span>
+                <span id="cartSubtotal" class="font-bold text-white">0 đ</span>
+            </div>
+            <div class="flex items-center justify-between text-sm">
+                <span class="text-slate-400">Giao hàng:</span>
+                <span class="font-semibold text-emerald-400">Miễn phí</span>
+            </div>
+            <div class="flex items-center justify-between text-lg font-black pt-2 border-t border-slate-800">
+                <span class="text-white">Tổng tiền:</span>
+                <span id="cartTotal" class="text-cyan-400">0 đ</span>
+            </div>
+
+            <button onclick="checkoutCart()" class="w-full py-3.5 bg-gradient-to-r from-cyan-400 to-blue-600 hover:from-cyan-300 hover:to-blue-500 text-black font-extrabold text-sm rounded-xl shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2">   <i class="fa-solid fa-credit-card"></i> Tiến Hành Thanh Toán
+            </button>
+        </div>
+
+    </div>
+
+    <!-- PRODUCT SPECIFICATIONS MODAL -->
+    <div id="specModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="bg-cardbg border border-slate-800 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl relative">
+            
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-900/60">
+                <div class="flex items-center gap-3">
+                    <span id="modalBrandBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">Apple</span>
+                    <h3 id="modalTitle" class="text-xl font-bold text-white">Tên sản phẩm</h3>
+                </div>
+                <button onclick="closeSpecModal()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content (Scrollable) -->
+            <div class="p-6 overflow-y-auto space-y-6">                <div class="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
+                    <div class="sm:col-span-5 h-52 flex items-center justify-center bg-slate-900/80 rounded-2xl p-4 border border-slate-800">
+                        <img id="modalImage" src="" alt="Phone Detail" class="max-h-full object-contain">
+                    </div>
+                    <div class="sm:col-span-7 space-y-3">
+                        <div id="modalPriceSection" class="flex items-baseline gap-3">
+                            <span id="modalPrice" class="text-2xl font-black text-cyan-400">0 đ</span>
+                            <span id="modalOldPrice" class="text-sm text-slate-500 line-through">0 đ</span>
+                        </div>
+                        <p id="modalDesc" class="text-xs text-slate-400 leading-relaxed">Mô tả sản phẩm...</p>
+                        
+                        <!-- Actions -->
+                        <div class="pt-2 flex gap-3">
+                            <button id="modalBuyBtn" class="flex-1 py-2.5 bg-cyan-400 hover:bg-cyan-300 text-black font-bold text-xs rounded-xl transition-all">
+                                Thêm Vào Giỏ Hàng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Full Technical Specifications Table -->
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">                        <i class="fa-solid fa-microchip text-cyan-400"></i> Thông Số Kỹ Thuật Chi Tiết
+                    </h4>
+                    
+                    <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-800 space-y-2 text-xs">
+                        <div class="grid grid-cols-3 py-2 border-b border-slate-800/80">
+                            <span class="text-slate-400">Màn hình:</span>
+                            <span id="specScreen" class="col-span-2 text-slate-200 font-medium">OLED 6.7 inch</span>
+                        </div>
+                        <div class="grid grid-cols-3 py-2 border-b border-slate-800/80">
+                            <span class="text-slate-400">Chipset (CPU):</span>
+                            <span id="specChip" class="col-span-2 text-slate-200 font-medium">Apple A18 Pro</span>
+                        </div>
+                        <div class="grid grid-cols-3 py-2 border-b border-slate-800/80">
+                            <span class="text-slate-400">RAM / Bộ nhớ:</span>
+                            <span id="specRamRom" class="col-span-2 text-slate-200 font-medium">8GB / 256GB</span>
+                        </div>
+                        <div class="grid grid-cols-3 py-2 border-b border-slate-800/80">
+                            <span class="text-slate-400">Camera sau:</span>
+                            <span id="specCamera" class="col-span-2 text-slate-200 font-medium">48MP + 48MP + 12MP</span>
+                        </div>
+                        <div class="grid grid-cols-3 py-2 border-b border-slate-800/80">
+                            <span class="text-slate-400">Pin & Sạc:</span>      <span id="specBattery" class="col-span-2 text-slate-200 font-medium">4,685 mAh, Sạc nhanh 30W</span>
+                        </div>
+                        <div class="grid grid-cols-3 py-2">
+                            <span class="text-slate-400">Hệ điều hành:</span>
+                            <span id="specOs" class="col-span-2 text-slate-200 font-medium">iOS 18</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-800 border border-cyan-400/50 text-white px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300">
+        <div class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+            <i class="fa-solid fa-check text-sm"></i>
+        </div>
+        <span id="toastMsg" class="text-xs font-semibold">Đã thêm vào giỏ hàng!</span>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-slate-800/80 mt-16 text-slate-400 text-xs">       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="space-y-3">
+                <a href="#" class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center text-black font-black text-base">
+                        BT
+                    </div>
+                    <span class="text-lg font-black tracking-wider uppercase text-white">B&T<span class="gradient-text">STORE</span></span>
+                </a>
+                <p class="text-slate-500 leading-relaxed">
+                    Hệ thống bán lẻ điện thoại di động, phụ kiện công nghệ chính hãng hàng đầu Việt Nam. Cam kết chất lượng & dịch vụ bảo hành ưu việt.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-sm font-bold text-white mb-3">Danh Mục Hot</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-cyan-400 transition-colors">iPhone 16 Series</a></li>
+                    <li><a href="#" class="hover:text-cyan-400 transition-colors">Samsung Galaxy S25 Ultra</a></li>
+                    <li><a href="#" class="hover:text-cyan-400 transition-colors">Xiaomi Flagship AI</a></li>
+                    <li><a href="#" class="hover:text-cyan-400 transition-colors">RedMagic</a></li>
+                </ul>
+            </div>            <div>
+                <h4 class="text-sm font-bold text-white mb-3">Chính Sách & Hỗ Trợ</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-cyan-400 transition-colors">Chính sách bảo hành 24 tháng</a></li>
+                    <li><a href="#" class="hover:text-cyan-400 transition-colors">Hướng dẫn trả góp 0%</a></li>
+                    <li><a href="#" class="hover:text-cyan-400 transition-colors">Giao hàng & Lắp đặt tại nhà</a></li>
+                    <li><a href="#" class="hover:text-cyan-400 transition-colors">Chính sách đổi trả 30 ngày</a></li>
+                </ul>
+            </div>
+
+            </div>
+
+        <div class="border-t border-slate-900 py-6 text-center text-slate-600">
+            <p>&copy; 2026 B&TSTORE. Tất cả quyền được bảo lưu. Thiết kế dành cho trải nghiệm mua sắm hiện đại.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // 1. PRODUCT DATABASE
+        const products = [
+            {
+                id: 1,
+                name: "iPhone Duo",
+                brand: "Apple",
+                price: 84490000,
+                oldPrice: 89999999,
+                image: "https://cdn.phototourl.com/member/2026-10-31-b4c18349-296e-4c9a-897f-04d485cdf13b.jpg",
+                chip: "Apple A20 Pro (2nm) 6 nhân (2x GHz + 4x GHz)Apple GPU (7 lõi đồ họa)",
+                ramRom: "12GB / 1TB",
+                battery: "Li-Ion xxxx mAh Sạc nhanh dây, PD3.2, AVS, 50% pin trong 20 phút Sạc không dây (MagSafe/Qi2) 25W",
+                screen: "Màn hình chính: LTPO Super Retina XDR OLED, 120Hz, HDR10, Dolby Vision, 1000 nits (typ), 1600 nits (HBM), 3000 nits (peak) 7.6 inches, 1878 x 2670 pixels, ~430 ppi Hoàn thiện kết cấu nano OLED góc rộng Nếp gấp nhỏ trên màn hình Lớp phủ chống chói Màn hình phụ: LTPO Super Retina XDR OLED, 120Hz, HDR10, Dolby Vision, 1000 nits (typ), 1600 nits (HBM), 3000 nits (peak)5.4 inches, 1398 x 2034 pixels Kính bảo vệ Ceramic Shield Lớp phủ chống chói",
+                camera: "48 MP, f/1.8, 24mm (góc rộng), 1/1.28, 1.22µm, PDAF, sensor-shift OIS (thế hệ 248 MP, f/2.2, 13mm (góc siêu rộng), 1/2.55, 0.7µm, PDAFQuay phim: 4K@24/25/30/60/100/120fps, 1080p@25/30/60/120/240fps, 10-bit HDR, Dolby Vision HDR (up to 120fps), ProRes, 3D (spatial) video/audio, stereo sound rec.",                os: "iOS 27",
+                desc: "iPhone Duo là bước nhảy vọt hoàn hảo của Apple khi gói gọn cả thế giới iPad rộng lớn vào một thiết bị vừa vặn trong lòng bàn tay."
+            },
+            {
+                id: 2,
+                name: "Samsung Galaxy S26 Ultra",
+                brand: "Samsung",
+                price: 30990000,
+                oldPrice: 40990000,
+                image: "https://cdn.phototourl.com/member/2026-10-31-25f1370c-f961-4fc0-a334-bb319e6d757f.jpg",
+                chip: "Qualcomm Snapdragon 8 Elite Gen 5 (3 nm) 8 nhân GPU: Adreno 840",
+                ramRom: "12-16GB / 256GB-1TB,UFS 4.0",
+                battery: "Li-Ion 5000 mAh Sạc nhanh 60W Sạc không dây 25W (Qi2) Sạc ngược không dây 4.5W",
+                screen: "Dynamic LTPO AMOLED 2X, 120Hz, HDR10+, 2600 nits (peak) 6.9 inches, QHD+ (1440 x 3120 pixels) Tỷ lệ 19.5:9; mật độ điểm ảnh ~498 ppi Tính năng Always-on Display",
+                camera: "200 MP, CMOS Sony (góc rộng), 1/1.1, PDAF, OIS10 MP (tele), PDAF, OIS, 3x optical zoom50 MP (tiềm vọng tele), PDAF, OIS, 5x optical zoom50 MP (góc siêu rộng), PDAF, Super Steady videoQuay phim: 8K, 4K, 1080p, 10-bit HDR, HDR10+, stereo sound rec., gyro-EIS",
+                os: "Android 16, One UI 8 (hỗ trợ cập nhật 7 bản Android chính)",
+                desc: "Là đỉnh cao của sự toàn năng, nơi hiệu năng đỉnh phong, nhiếp ảnh 200MP và AI tiên tiến hội tụ để định nghĩa lại chuẩn mực flagship."
+            },
+            {
+                id: 3,
+                name: "Xiaomi 17T Pro",
+                brand: "Xiaomi",
+                price: 17500000,oldPrice: 20999999,
+                image: "https://cdn.phototourl.com/member/2026-10-30-f89a58d0-03bc-4f67-ac74-8a4b00cd9ddc.jpg",
+                chip: "MediaTek Dimensity 9500 (3 nm) 8 nhân (1x4.21 GHz & 3x3.5 GHz & 4x2.7 GHz) GPU: Arm G1-Ultra",
+                ramRom: "12GB / 256-512GB",
+                battery: "7000 mAh Sạc nhanh 100W, PD3.0, QC4 Sạc không dây 50W Sạc ngược có dây 22,5W",
+                screen: "AMOLED, 68 tỷ màu, 144Hz, 3840Hz PWM, Dolby Vision, HDR10+, 3500 nits (peak) 6.83 inches, 1.5K (1220 x 2712 pixels) Corning Gorilla Glass 7i",
+                camera: "50 MP, f/1.7, 23mm (góc rộng), 1/1.31, multi-directional PDAF, OIS50 MP, f/3.0, 115mm (tele tiềm vọng), PDAF, OIS, zoom quang 5x12 MP, f/2.2, 15mm, 120˚ (góc siêu rộng)Quay phim: 8K@30fps, 4K@30/60/120fps, 1080p@30/60/120/240fps, gyro-EIS, 10-bit Rec. 2020, HDR10+",
+                os: "Android 16, HyperOS 3",
+                desc: "Xiaomi 17T Pro không chỉ là một chiếc điện thoại, mà là cuốn phim Leica sắc nét đưa mọi khoảnh khắc thường nhật thành kiệt tác nghệ thuật."
+            },
+            {
+                id: 4,
+                name: "Samsung Galaxy Z Flip 8 Pro",
+                brand: "Samsung",
+                price: 31100000,
+                oldPrice: 35999999,
+                image: "https://cdn.phototourl.com/member/2026-10-31-9ad06609-b515-4495-b89b-ae43846469d8.jpg",
+                chip: "Exynos 2600 (2 nm) 8 nhân (1x3.80GHz & 3x3.25GHz & 6x2.75GHz)GPU: Xclipse 960",
+                ramRom: "12GB / 256-512GB, UFS 4.x",
+                battery: "5.910 mAh - Sạc SuperVOOC 80W",
+                screen: "Màn trong: Foldable Dynamic LTPO AMOLED 2X, 120Hz, HDR10+, 2600 nits (peak) 6.9 inches, Full HD+ (1080 x 2520 pixels)Tỷ lệ 21:9, mật độ điểm ảnh ~400 ppi Màn ngoài: Super AMOLED, 120Hz, 2600 nits (peak)4.1 inches, 948 x 1048 pixels Mật độ điểm ảnh ~342 ppi Kính bảo vệ Gorilla Glass Victus 2",
+                camera: "50 MP, f/1.8, 23mm (góc rộng), 1/1.57, 1.0µm, dual pixel PDAF, OIS12 MP, f/2.2, 13mm, 123˚ (góc siêu rộng), 1/3.2, 1.12µmQuay phim: 4K@30/60fps, 1080p@60/120/240fps, HDR10+",                os: "Android 17, One UI 9 Hỗ trơ cập nhật 7 bản Android chính",
+                desc: "Món phụ kiện thời trang vô giá kết hợp cùng công nghệ gập đột phá, Galaxy Z Flip 8 cô đọng trọn vẹn sự tiện ích đỉnh cao chỉ trong một nét gập gọn."
+            },
+            {
+                id: 5,
+                name: "RedMagic 11S Pro",
+                brand: "RedMagic",
+                price: 21500000,
+                oldPrice: 25999999,
+                image: "https://cdn.phototourl.com/member/2026-10-30-b42cd351-040a-4169-bd5b-1c59ca0bb4a8.jpg",
+                chip: "Snapdragon 8 Elite Gen 5 Leading Edition (3 nm) 8 nhân (2x4.74 GHz & 6x3.62 GHz) GPU: Adreno 840",
+                ramRom: "12GB / 256GB, UFS 4.1 Pro",
+                battery: "Si/C Li-Ion 8000 mAh Sạc nhanh 80WW",
+                screen: "AMOLED, 1 tỷ màu, 144Hz, 2592Hz PWM, 1800 nits (peak) 6.85 inches, 1.5K (1216 x 2688 pixels) Mật độ điểm ảnh ~431 pp",
+                camera: "50 MP, f/1.9 (góc rộng), 1/1.55, PDAF, OIS50 MP, f/2.0 (góc siêu rộng), 1/2.88, 0.61µmQuay phim: 8K@30fps, 4K@30/60fps, 1080p@30/60/120/240fps",
+                os: "Android 16, Redmagic OS 11",
+                desc: "Một mãnh thú gaming thực thụ, biến mọi trận chiến ảo thành trải nghiệm mượt mà đỉnh cao nhờ sức mạnh phần cứng không giới hạn."
+            },
+            {
+                id: 6,
+                name: "iPhone 18 Pro",
+                brand: "Apple",
+                price: 56999999,oldPrice: 65999999,
+                image: "https://cdn.phototourl.com/member/2026-10-30-53877bc4-cb56-44a6-a97b-aa184d7d329d.jpg",
+                chip: "Apple A20 Pro (2 nm) 6 nhân (2x GHz + 4x GHz) Apple GPU (7 lõi đồ họa)",
+                ramRom: "12GB / 256GB-2TB, NVMe",
+                battery: "Li-Ion 4056 mAh (bản có Nano SIM) Li-Ion 4288 mAh (bản chỉ có eSIM) Sạc nhanh (dây) PD2.0 Sạc nhanh (dây) PD2.0 Sạc 25W (không dây MagSafe/Qi2) Sạc 15W (không dây MagSafe - Bản Trung Quốc) Lưu ý: Dung lượng pin chưa được xác nhận chính thức. Sạc 4.5W ngược (dây)",
+                screen: "LTPO Super Retina XDR OLED, 120Hz, HDR10, Dolby Vision 6.3 inches, 1.5K (1206 x 2622 pixels) Tỷ lệ 19.5:9, mật độ điểm ảnh ~458 ppi Kính bảo vệ Ceramic Shield 2; Lớp phủ chống chói",
+                camera: "48 MP, f/1.6-4.0, 24mm (góc rộng), 1/1.28, 1.22µm, dual pixel PDAF, sensor-shift OIS 48 MP, f/2.8, 100mm (tele tiềm vọng), 1/2.55, 0.7µm, PDAF, 3D sensor‑shift OIS, zoom quang 4x 48 MP, f/2.2, 13mm, 120˚ (góc siêu rộng), 1/2.55, 0.7µm, PDAF TOF 3D LiDAR scanner (độ sâu) Quay phim: 4K@24/25/30/60/100/120fps, 1080p@25/30/60/120/240fps, 10-bit HDR, Dolby Vision HDR (up to 120fps), ProRes, ProRes RAW (up to 120fps), Apple Log 2, 3D (spatial) video/audio, stereo sound rec",
+                os: "iOS 27",
+                desc: "Sở hữu sức mạnh phần cứng vô song cùng hệ thống camera đột phá, iPhone 18 Pro biến mọi khoảnh khắc đời thường thành khung hình điện ảnh đỉnh cao."
+            },
+            {
+                id: 7,
+                name: "IQOO 16",
+                brand: "IQOO",
+                price: 23500000,
+                oldPrice: 26999999,
+                image: "https://cdn.phototourl.com/member/2026-10-30-ef9b4659-119e-4a45-8eb1-fab9c8ca0fd1.jpg",
+                chip: "Qualcomm SM8975 Snapdragon 8 Elite Extreme Gen 6 (2 nm) 8 nhân (2x5.01 GHz & 3x4.03 GHz & 3x3.74 GHz) GPU: Adreno 850",
+                ramRom: "12-16GB, LPDDR5X Ultra 4 kênh / 256GB-1TB, UFS 4.1",
+                battery: "Si/C Li-Ion 8400 mAh Sạc nhanh 100W, PPS, PD Sạc không dây 40W Hỗ trợ sạc nhánh Bypass",
+                screen: "AMOLED, 1 tỷ màu, 165Hz, 3300Hz PWM, Dolby Vision, HDR10+, HDR Vivid, 2800 nits (HBM), 10.000 nits 6.85 inches, 2K (1440 x 3168 pixels) Mật độ điểm ảnh ~508 ppi",
+                camera: "50 MP, f/1.7 (góc rộng), 1/1.3, PDAF, OIS 50 MP, f/2.7, 85mm (tele tiềm vọng), 1/1.95, 0.8µm, PDAF, OIS, zoom quang 3x 50 MP, f/2.1, 15mm (góc siêu rộng), 1/2.75, 0.64µm, AF Quay phim: 8K@30fps, 4K@24/30/60fps, 1080p@30/60/120/240fps, gyro-EIS",os: "Android 17, OriginOS 7",
+                desc: "Bản lĩnh của kẻ săn bài toán hiệu năng: Đánh gục mọi thử thách đồ họa bằng sức mạnh bứt phá và độ mượt đến nghẹt thở."
+            },
+            {
+                id: 8,
+                name: "IQOO Z12 Turbo",
+                brand: "IQOO",
+                price: 19450000,
+                oldPrice: 24999999,
+                image: "https://cdn.phototourl.com/member/2026-10-30-4966e422-761c-412b-9466-11d1b898c229.jpg",
+                chip: "Qualcomm SM8850-AC Snapdragon 8 Elite Gen 5 (3 nm) 8 nhân (2x4.6 GHz & 6x3.62 GHz) GPU: Adreno 840+",
+                ramRom: "12-16GB, LPDDR5X / 256GB-1TB, UFS 4.1",
+                battery: "Si/C Li-Ion 9000 mAh Sạc nhanh 100W",
+                screen: "AMOLED, 1 tỷ màu, 165Hz, 2160Hz PWM 6.83 inches, 1.5K",
+                camera: "200 MP (góc rộng), PDAF, OIS 8 MP (góc siêu rộng) Quay phim: 4K, 1080p, gyro-EIS, OIS",
+                os: "Android 17, OriginOS 7",
+                desc: "Một cỗ máy bùng nổ sức mạnh, mang dòng máu Turbo cuồng nhiệt để san phẳng mọi ranh giới phân khúc và thống trị mọi tựa game."
+            },
+          
+          {
+                id: 9,
+                name: "Xiaomi 18T Pro",
+                brand: "Xiaomi",
+                price: 35050000,
+                oldPrice: 37999999,
+                image: "https://cdn.phototourl.com/member/2026-10-31-250910c9-c3c7-460b-ad99-6ab7852924d6.webp",
+                chip: "Qualcomm Snapdragon 8 Elite Gen 6 (2 nm) 8 nhân lên tới 5 GHz GPU: Adreno",
+                ramRom: "12-16GB / 256GB-1TB, UFS 4.1",
+                battery: "Si/C Li-Ion 7000 mAh Sạc nhanh 100W, PD3.0, QC3+, 100W PPS Sạc không dây 50W Sạc ngược không dây 27W",
+                screen: "Màn chính: LTPO AMOLED, 68 tỷ màu, 120Hz, 2160Hz PWM, Dolby Vision, HDR Vivid, HDR10+, BT.2020, 4000 nits (peak) 6.4 inches, 1.5K (1120 x 2436 pixels) Tỷ lệ 19.5:9, mật độ điểm ảnh ~418 ppi Kính Xiaomi Dragon Crystal 3 Màn phụ (sau): LTPO AMOLED, 120Hz, Dolby Vision, HDR Vivid, HDR10+, BT.2020, 4000 nits (peak) 2.7 inches, 596 x 976 pixels",
+                camera: "200 MP, f/1.7, 23mm (góc rộng), 1/1.28, 0.61µm, dual pixel PDAF, OIS 200 MP, f/2.4, 75mm (tele tiềm vọng), 1/1.56, PDAF (10cm - ∞), OIS, zoom quang 3.2x 50 MP, f/2.4, 17mm, 102˚ (góc siêu rộng), 1/2.88, 0.61µm, PDAFQuay phim: 8K@30fps (HDR), 4K@30/60/120fps (HDR10+, 10-bit Dolby Vision HDR, 10-bit LOG), 1080p@30/60/120/240/960fps, 720p@1920fps, gyro-EIS",
+                os: "Android 17, HyperOS 4",
+                desc: "Cuộn phim nghệ thuật gói trọn trong lòng bàn tay, biến từng khoảng khắc đời thường thành khung hình điện ảnh đậm chất Leica sắc nét, nơi chất phim nhiếp ảnh đỉnh cao hòa quyện cùng sức mạnh của một sát thủ flagship thực thụ."
+      },
+          {
+                id: 10,
+                name: "Oppo Find X9 Ultra",
+                brand: "OPPO",
+                price: 28900000,
+                oldPrice: 29750000,
+                image: "https://cdn.phototourl.com/member/2026-10-31-d4932271-546d-4aca-bce3-cdf0fac50c81.jpg",
+                chip: "Qualcomm Snapdragon 8 Elite Gen 5 (3 nm)",
+                ramRom: "12-16GB, LPDDR5X",
+                battery: "Si/C 7050 mAh, Sạc nhanh 100W, Sạc không dây 50W, Sạc ngược không dây 10W",
+                screen: "LTPO AMOLED, 1 tỷ màu, 144Hz, Dolby Vision, HDR10+, 1600 nits (typ), 2600 nits",
+                camera: "200 MP (góc rộng), f/1.5, 23mm, 1/1.12",
+                os: "Android 16, ColorOS 16",
+                desc: "Kính thiên văn thu nhỏ mang linh hồn Hasselblad, biến mọi khoảng cách và ranh giới ánh sáng thành những kiệt tác nhiếp ảnh nguyên bản vượt thời gian."
+      },{
+                id: 11,
+                name: "Vivo X300 Ultra",
+                brand: "Vivo",
+                price: 34350000,
+                oldPrice: 36363636,
+                image: "https://cdn.phototourl.com/member/2026-10-31-6ab2e605-2ef3-4a8d-8b05-d665027efd13.jpg",
+                chip: "Snapdragon 8 Elite Gen 5 (3 nm) 8 nhân (2x4.6 GHz Oryon V3 Phoenix L + 6x3.62 GHz Oryon V3 Phoenix M) GPU: Adreno 840",
+                ramRom: "12-16GB, LPDDR5X / 256GB-1TB, UFS 4.1",
+                battery: "Si/C Li-Ion 6600mAh Sạc 100W Sạc không dây 40W",
+                screen: "LTPO AMOLED, 1 tỷ màu, 144Hz, Dolby Vision, HDR 6.82 inches, QHD+ (1440 x 3200 pixels), 4500 nits (peak)",
+                camera: "200 MP (góc rộng), f/1.9, 35mm, 1/1.12, 0.7µm, PDAF, gimbal OIS 200 MP (tele tiềm vọng), f/2.7, 85mm, multi-directional PDAF, OIS, 3.7x optical zoom, macro 3.4:1 50 Mp (góc siêu rộng) Quay phim: 8K, 4K, 1080p, gyro-EIS, Dolby Vision HDR",
+                os: "Android 16, OriginOS 6",
+                desc: "Bảo báu quang học mang linh hồn Zeiss, biến đêm đen thành ngày sáng và thu trọn những khung hình viễn vọng thành tuyệt tác sắc nét đến từng chi tiết."
+      },{
+                id: 12,
+                name: "RedMagic 12 Pro Plus",
+                brand: "Redmagic",
+                price: 34750000,
+                oldPrice: 38999999,
+                image: "https://cdn.phototourl.com/member/2026-10-31-f7c7b8b4-c7b2-4257-b720-e8c629afc153.jpg",
+                chip: "Qualcomm SM8975 Snapdragon 8 Elite Extreme Gen 6 (2 nm) 8 nhân (2x5.01 GHz + 3x4.03 GHz + 3x3.74 GHz) GPU: Adreno 850",
+                ramRom: "12-16GB / 256GB-1TB, UFS 4.1",
+                battery: "Si/C Li-Ion 8400 mAh Sạc nhanh 120W Sạc không dây 80W Sạc ngược 22.5W (dây)",
+                screen: "AMOLED, 1 tỷ màu, 185Hz, PWM, 1900 nits (HBM), 5000 nits (peak) 6.85 inches, 1.5K (1216 x 2688 pixels) Mật độ điểm ảnh ~431 ppi Kính bảo vệ Corning Gorilla 7i",
+                camera: "50 MP, f/1.9, 23mm (góc rộng), 1/1.55, 1.0µm, multi-directional PDAF, OIS 50 MP, f/2.0, 13mm (góc siêu rộng), 1/2.88, 0.61µm, AF Quay phim: 8K@30fps, 4K@30/60fps, 1080p@30/60/120/240fps",
+                os: "Android 17, Redmagic OS 12",
+                desc: "Chiến hạm viễn tưởng giấu mình trong thiết kế tràn viền tuyệt đối, nơi sức mạnh gaming tối thượng hòa quyện cùng nguồn năng lượng thiêu rụi mọi giới hạn đồ họa."
+      },{
+                id: 13,
+                name: "OPPO Find X10 Pro Max",
+                brand: "OPPO",
+                price: 35150000,
+                oldPrice: 36999000,
+                image: "https://cdn.phototourl.com/member/2026-10-31-69cdd0e5-4bc8-412e-aa1a-62e66ccf0e9e.jpg",
+                chip: "MediaTek Dimensity 9600 Pro (2 nm)8 nhân (2x4.55 GHz & 3x4.35 GHz &3x3.10 GHz)GPU: Mali-G2-Ultra-NX",
+                ramRom: "12-16GB / 256GB-1TB, UFS 4.1",
+                battery: "Si/C Li-Ion 8000 mAh (Quốc tế), 7150 mAh (Châu Âu), Sạc nhanh 80W, 44/80W UFCS, 55W PPS, 13.5W PD, Sạc không dây 50W, Sạc ngược không dây 10W",
+                screen: "LTPO AMOLED, 1 tỷ màu, 144Hz, 3840Hz PWM, Dolby Vision, HDR10+, HDR Vivid, BT.2020, 800 nits (typ), 2000 nits (HBM), 3600 nits (peak)6.78 inches, 1.5K (1272 x 2772 pixels)",
+                camera: "200 MP, f/1.5, 24mm (góc rộng), 1/1.3, 0.6µm, PDAF, OIS, 200 MP, f/2.1, 70mm (tiềm vọng tele), , 1/1.56, 0.5µm, PDAF (10cm - ∞), OIS, zoom quang 3x, 200 MP, f/2.2, 13mm˚ (góc siêu rộng), 1/1.56, 0.5µm, PDAF",
+                os: "Android 17, ColorOS 17",
+                desc: "Đỉnh phong của kỷ nguyên di động, nơi ống kính quang học vượt tầm giới hạn hòa cùng trí tuệ nhân tạo để tạo nên một kiệt tác bứt phá mọi chuẩn mực."
+          }
+        ];
+      // State Variables
+        let activeBrand = 'all';
+        let searchQuery = '';
+        let currentSort = 'default';
+        let cart = [];
+
+        // 2. HELPER FUNCTIONS
+        function formatPrice(num) {
+            return num.toLocaleString('vi-VN') + ' đ';
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = msg;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 2500);
+        }
+
+        // 3. RENDER PRODUCTS GRID
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            // Filter logic
+            let filtered = products.filter(p => {
+                const matchBrand = (activeBrand === 'all') || (p.brand.toLowerCase() === activeBrand.toLowerCase());
+                const matchSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                    p.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    p.chip.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchBrand && matchSearch;
+            });
+
+            // Sorting logic
+            if (currentSort === 'asc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (currentSort === 'desc') {
+                filtered.sort((a, b) => b.price - a.price);
+            }
+
+            // Update count
+            document.getElementById('productCount').innerText = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            // Render HTML cards
+            grid.innerHTML = filtered.map(product => {
+                return `
+                <div class="bg-cardbg rounded-2xl border border-slate-800 p-4 flex flex-col justify-between hover:border-cyan-500/50 hover:shadow-xl hover:shadow-cyan-500/10 transition-all duration-300 group">
+                    <div>
+                        <!-- Image Container -->
+                        <div class="relative h-56 bg-slate-900/80 rounded-xl p-4 flex items-center justify-center overflow-hidden mb-4 border border-slate-800/60">
+                            <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-slate-800 text-cyan-400 border border-slate-700">
+                                ${product.brand}
+                            </span>
+                            <img src="${product.image}" alt="${product.name}" class="max-h-full object-contain group-hover:scale-105 transition-transform duration-300">
+                        </div>
+
+                        <!-- Info -->
+                        <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors line-clamp-1">${product.name}</h3>
+                        
+                        <!-- Quick specs badge -->
+                        <div class="my-3 space-y-1.5 text-[11px] text-slate-400">
+                            <div class="flex items-center gap-1.5">
+                                <i class="fa-solid fa-microchip text-cyan-400 w-4"></i>
+                                <span class="truncate">${product.chip}</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <i class="fa-solid fa-memory text-cyan-400 w-4"></i>
+                                <span>${product.ramRom}</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <i class="fa-solid fa-battery-full text-cyan-400 w-4"></i>
+                                <span class="truncate">${product.battery}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price & Action Buttons -->
+                    <div class="pt-3 border-t border-slate-800/80 space-y-3">
+                        <div class="flex items-baseline justify-between">
+                            <div>
+                                <span class="text-lg font-black text-cyan-400">${formatPrice(product.price)}</span>
+                            </div>
+                            <span class="text-xs text-slate-500 line-through">${formatPrice(product.oldPrice)}</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="openSpecModal(${product.id})" class="py-2 px-3 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-bold text-xs transition-colors border border-slate-700">
+                                <i class="fa-solid fa-circle-info mr-1"></i> Chi tiết
+                            </button>
+                            <button onclick="addToCart(${product.id})" class="py-2 px-3 bg-cyan-400 hover:bg-cyan-300 text-black rounded-xl font-extrabold text-xs transition-all shadow-md shadow-cyan-500/20">
+                                <i class="fa-solid fa-cart-plus mr-1"></i> Mua ngay
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+// 4. FILTER AND SEARCH CONTROLS
+        function filterByBrand(brand) {
+            activeBrand = brand;
+            document.querySelectorAll('.brand-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-cyan-400', 'text-black', 'border-cyan-400');
+                btn.classList.add('bg-slate-800', 'text-slate-300', 'border-slate-700');
+            });
+            event.currentTarget.classList.add('active', 'bg-cyan-400', 'text-black', 'border-cyan-400');
+            event.currentTarget.classList.remove('bg-slate-800', 'text-slate-300', 'border-slate-700');
+            
+            renderProducts();
+        }
+
+        function handleHeaderSearch(value) {
+            searchQuery = value;
+            document.getElementById('headerSearch').value = value;
+            document.getElementById('mobileSearch').value = value;
+            document.getElementById('filterSearch').value = value;
+            renderProducts();
+        }
+
+        function sortProducts(val) {
+            currentSort = val;
+            renderProducts();
+        }
+
+        function resetFilters() {
+            activeBrand = 'all';
+            searchQuery = '';
+            currentSort = 'default';
+            document.getElementById('headerSearch').value = '';
+            document.getElementById('mobileSearch').value = '';
+            document.getElementById('filterSearch').value = '';
+            document.getElementById('sortPrice').value = 'default';
+            renderProducts();
+        }
+
+        function toggleMobileSearch() {
+            const drawer = document.getElementById('mobileSearchDrawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        // 5. MODAL DETAILED SPECS LOGIC
+        function openSpecModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            document.getElementById('modalTitle').innerText = product.name;
+            document.getElementById('modalBrandBadge').innerText = product.brand;
+            document.getElementById('modalImage').src = product.image;
+            document.getElementById('modalPrice').innerText = formatPrice(product.price);
+            document.getElementById('modalOldPrice').innerText = formatPrice(product.oldPrice);
+            document.getElementById('modalDesc').innerText = product.desc;
+
+            document.getElementById('specScreen').innerText = product.screen;
+            document.getElementById('specChip').innerText = product.chip;
+            document.getElementById('specRamRom').innerText = product.ramRom;
+            document.getElementById('specCamera').innerText = product.camera;
+            document.getElementById('specBattery').innerText = product.battery;
+            document.getElementById('specOs').innerText = product.os;
+
+            const buyBtn = document.getElementById('modalBuyBtn');
+            buyBtn.onclick = function() {
+                addToCart(product.id);
+                closeSpecModal();
+            };
+
+            document.getElementById('specModal').classList.remove('hidden');
+        }
+
+        function closeSpecModal() {
+            document.getElementById('specModal').classList.add('hidden');
+        }
+
+// 6. CART MANAGEMENT DRAWER LOGIC
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existing = cart.find(item => item.product.id === productId);
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ product: product, quantity: 1 });
+            }
+
+            updateCartUI();
+            showToast(`Đã thêm "${product.name}" vào giỏ hàng`);
+        }
+
+        function updateCartQuantity(productId, change) {
+            const index = cart.findIndex(item => item.product.id === productId);
+            if (index !== -1) {
+                cart[index].quantity += change;
+                if (cart[index].quantity <= 0) {
+                    cart.splice(index, 1);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cartBadge');
+            const list = document.getElementById('cartItemsList');
+            const subtotalEl = document.getElementById('cartSubtotal');
+            const totalEl = document.getElementById('cartTotal');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            badge.innerText = totalCount;
+
+            let totalMoney = 0;
+
+            if (cart.length === 0) {
+                list.innerHTML = `
+                    <div class="py-12 text-center text-slate-500">
+                        <i class="fa-solid fa-cart-flatbed text-3xl mb-2"></i>
+                        <p class="text-xs">Giỏ hàng của bạn đang trống</p>
+                    </div>
+                `;
+            } else {
+                list.innerHTML = cart.map(item => {
+                    const itemTotal = item.product.price * item.quantity;
+                    totalMoney += itemTotal;
+                    return `
+                        <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800 flex items-center gap-3">
+                            <img src="${item.product.image}" class="w-12 h-12 object-contain bg-slate-950 p-1 rounded-lg">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-xs font-bold text-white truncate">${item.product.name}</h4>
+                                <p class="text-xs text-cyan-400 font-bold mt-0.5">${formatPrice(item.product.price)}</p>
+                            </div>
+                            <div class="flex items-center gap-1.5 bg-slate-800 rounded-lg p-1 border border-slate-700">
+                                <button onclick="updateCartQuantity(${item.product.id}, -1)" class="w-5 h-5 text-xs text-slate-300 hover:bg-slate-700 rounded flex items-center justify-center">-</button>
+                                <span class="text-xs font-bold text-white w-4 text-center">${item.quantity}</span>
+                                <button onclick="updateCartQuantity(${item.product.id}, 1)" class="w-5 h-5 text-xs text-slate-300 hover:bg-slate-700 rounded flex items-center justify-center">+</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            subtotalEl.innerText = formatPrice(totalMoney);
+            totalEl.innerText = formatPrice(totalMoney);
+        }
+
+        function openCartDrawer() {
+            document.getElementById('cartOverlay').classList.remove('hidden');
+            document.getElementById('cartDrawer').classList.remove('translate-x-full');
+        }
+
+        function closeCartDrawer() {
+            document.getElementById('cartOverlay').classList.add('hidden');
+            document.getElementById('cartDrawer').classList.add('translate-x-full');
+        }
+
+        function checkoutCart() {
+            if (cart.length === 0) {
+                alert("Giỏ hàng của bạn đang trống. Vui lòng chọn sản phẩm!");
+                return;
+            }
+            alert("Cảm ơn bạn đã đặt hàng! Nhân viên B&TSTORE sẽ liên hệ xác nhận đơn hàng trong vòng 15 phút.");
+            cart = [];
+            updateCartUI();
+            closeCartDrawer();
+        }
+
+// INITIALIZE APP
+        window.onload = function() {
+            renderProducts();
+            updateCartUI();
+        };
+    </script>
+</body>
+</html>
